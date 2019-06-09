@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "windows": {
+      "options": {
+          "shell": {
+              "executable": "c:\\windows\\sysnative\\bash.exe",
+              "args": ["-c"]
+          }
+      }
+  },
+  "tasks": [
+      {
+          "label": "test on WSL",
+          "type": "shell",
+          "command": "g++",
+          "args": [
+              "-g",
+              "-o",
+              "/home/lurenaa/wslCode/test/allocator_test.out",
+              "./main.cpp",
+              "-pthread"
+          ],
+          "group": {
+              "kind": "build",
+              "isDefault": true
+          }
+      }
+  ]
+}

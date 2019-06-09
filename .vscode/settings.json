@@ -1,0 +1,31 @@
+{
+  "files.associations": {
+    "memory": "cpp",
+    "array": "cpp",
+    "string_view": "cpp",
+    "*.tcc": "cpp",
+    "cctype": "cpp",
+    "clocale": "cpp",
+    "cmath": "cpp",
+    "cstdint": "cpp",
+    "cstdio": "cpp",
+    "cstdlib": "cpp",
+    "cwchar": "cpp",
+    "exception": "cpp",
+    "type_traits": "cpp",
+    "initializer_list": "cpp",
+    "iosfwd": "cpp",
+    "limits": "cpp",
+    "new": "cpp",
+    "stdexcept": "cpp",
+    "tuple": "cpp",
+    "typeinfo": "cpp",
+    "utility": "cpp",
+    "cwctype": "cpp",
+    "iostream": "cpp",
+    "istream": "cpp",
+    "ostream": "cpp",
+    "streambuf": "cpp",
+    "system_error": "cpp"
+  }
+}
