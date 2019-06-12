@@ -16,9 +16,8 @@
           "args": [
               "-g",
               "-o",
-              "/home/lurenaa/wslCode/test/allocator_test.out",
-              "./main.cpp",
-              "-pthread"
+              "/home/lurenaa/wslCode/test/allocTest.out",
+              "./allocator/allocTest.cpp"
           ],
           "group": {
               "kind": "build",

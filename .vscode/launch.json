@@ -5,7 +5,7 @@
               "name": "(gdb) Launch",
               "type": "cppdbg",
               "request": "launch",
-              "program": "/home/lurenaa/wslCode/test/allocator_test.out",
+              "program": "/home/lurenaa/wslCode/test/allocTest.out",
               "args": ["8080"],
               "stopAtEntry": true,
               "cwd": "/home/lurenaa/wslCode/test/",
