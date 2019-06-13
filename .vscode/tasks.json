@@ -17,7 +17,7 @@
               "-g",
               "-o",
               "/home/lurenaa/wslCode/test/allocTest.out",
-              "./allocator/allocTest.cpp"
+              "./src/allocTest.cpp"
           ],
           "group": {
               "kind": "build",
