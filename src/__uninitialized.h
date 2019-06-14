@@ -7,8 +7,7 @@
 namespace XX{
   template<typename InputItr, typename ForwardItr>
   ForwardItr uninitialized_copy_aux( InputItr first, InputItr last, ForwardItr d_first, std::true_type n) {
-    std::copy(first, last, d_first);
-    return d_first;
+    return std::copy(first, last, d_first);
   }
 
   template<typename InputItr, typename ForwardItr>
@@ -17,16 +16,31 @@ namespace XX{
     for(decltype(iterLen) i = 0; i < iterLen; ++i) {
       try { 
         __construct( &*(d_first + i), *(first + i));  //&*用来处理迭代器的情况
-      } catch(const std::exception& err) {
+      } catch(...) {
         __destroy(&*(d_first + i));
       } 
     }
-    return d_first;
+    return d_first + iterLen;
   }
 
   template<typename InputItr, typename ForwardItr>
   ForwardItr uninitialized_copy( InputItr first, InputItr last, ForwardItr d_first ) {
     return uninitialized_copy_aux(first, last, d_first, std::is_pod<ForwardItr>());
+  }
+
+  template<typename OutputIt, typename Size, typename T>
+  OutputIt uninitialized_fill_n_aux(OutputIt first, Size count, const T& val, std::false_type) {
+
+  }
+
+  template<typename OutputIt, typename Size, typename T>
+  OutputIt uninitialized_fill_n_aux(OutputIt first, Size count, const T& val, std::true_type) {
+
+  }
+
+  template<typename OutputIt, typename Size, typename T>
+  OutputIt uninitialized_fill_n(OutputIt first, Size count, const T& val) {
+    return uninitialized_fill_n(first, count, val, std::is_pod<T>());
   }
 }
 #endif//_UNINITIALIZED_H__

@@ -6,7 +6,7 @@
 #include <limits>
 
 namespace XX{
-template <typename T>
+template <typename T, class Alloc = alloc>
 class allocator{
 private:
   using value_type = T;
@@ -21,8 +21,8 @@ private:
   template<class U> struct rebind { typedef allocator<U> other; };
 public:
   pointer address( reference x ) const { return &*x; }
-  T* allocate( size_type n ) { return (T*)alloc::allocate(n); }
-  void deallocate( T* p, size_type n ) { return alloc::deallocate(p, n); }
+  T* allocate( size_type n ) { return (T*)Alloc::allocate(n); }
+  void deallocate( T* p, size_type n ) { return Alloc::deallocate(p, n); }
   size_type max_size() const noexcept {return std::numeric_limits<size_type>::max() / sizeof(value_type);}
   void construct( pointer p, const_reference val ) { 
     return __construct(p, val);

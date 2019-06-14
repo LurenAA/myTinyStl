@@ -1,6 +1,7 @@
 #include "__pool_alloc.h"
 #include "__simple_alloc.h"
 #include "__uninitialized.h"
+#include "stl_vector.h"
 #include <vector>
 using namespace std;
 
@@ -39,5 +40,7 @@ int main(int argv, char ** argc) {
   for(auto p: vec) {
     cout << p << endl;
   }
+
+  XX::vector<int> stlVec(10);
   return 0;
 } 
