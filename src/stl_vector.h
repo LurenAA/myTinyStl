@@ -4,6 +4,7 @@
 #include "__simple_alloc.h"
 #include <iterator>
 #include <stdexcept>
+#include <algorithm>
 
 namespace XX{
 template<typename T, class Allocator = allocator<T>>
@@ -25,12 +26,14 @@ private:
   iterator start, 
     finish,
     ending;  
+  iterator __insert_aux( iterator pos, const T& value );
 public:
   vector(): start(nullptr), finish(nullptr), ending(nullptr) {}
   explicit vector( size_type count );
   vector( size_type count, const_reference value);
   ~vector() {
-
+    __destroy(start);
+    Allocator().deallocate(start, capacity());
   }
   //
   reference       operator[]( size_type pos ) {return *(start + pos); }
@@ -47,11 +50,16 @@ public:
   const_reverse_iterator crbegin() const noexcept {return const_reverse_iterator(finish);}
   reverse_iterator rend() noexcept {return reverse_iterator(start);}
   const_reverse_iterator crend() const noexcept {return const_reverse_iterator(start);}
-
+  size_type capacity() const noexcept {return static_cast<size_type>(ending - start);}
+  iterator insert( iterator pos, const T& value );
+  iterator insert(iterator pos, size_type n, const T& value );
+  void push_back( const T& value );
 };
 
 template<typename T, class Allocator>
-typename vector<T, Allocator>::reference vector<T, Allocator>::at( size_type pos ) {
+typename vector<T, Allocator>::reference 
+vector<T, Allocator>::at( size_type pos ) 
+{
   if(pos < size()) {
     return start[pos];
   }
@@ -59,7 +67,9 @@ typename vector<T, Allocator>::reference vector<T, Allocator>::at( size_type pos
 }
 
 template<typename T, class Allocator>
-typename vector<T, Allocator>::const_reference vector<T, Allocator>::at( size_type pos ) const {
+typename vector<T, Allocator>::const_reference 
+vector<T, Allocator>::at( size_type pos ) const 
+{
   if(pos < size()) {
     return start[pos];
   }
@@ -76,7 +86,74 @@ template<typename T, class Allocator>
 vector<T, Allocator>::vector( size_type count, const_reference value) 
 : vector(count)
 {
-  
+  uninitialized_fill_n(start, count, value);
+  finish += count;
+}
+
+template<typename T, class Allocator>
+typename vector<T, Allocator>::iterator 
+vector<T, Allocator>::insert( iterator pos, const T& value ){
+  return __insert_aux(pos, value);
+}
+
+template<typename T, class Allocator>
+typename vector<T, Allocator>::iterator 
+vector<T, Allocator>::__insert_aux( iterator pos, const T& value ) 
+{
+  if(ending == finish) {
+    Allocator tmpAlloc;
+    size_type theSize = capacity() == 0 ? 1: 2 * capacity();
+    iterator newStart,
+      newFinish,
+      newEnding; 
+    newStart = tmpAlloc.allocate(theSize);
+    newFinish = uninitialized_copy(start, pos, newStart);
+    tmpAlloc.construct(newFinish, value);
+    ++newFinish;
+    newFinish = uninitialized_copy(pos, finish, newFinish);
+    newEnding = theSize + newStart;
+    tmpAlloc.destroy(start);
+    tmpAlloc.deallocate(start, capacity());
+    start = newStart;
+    finish = newFinish;
+    ending = newEnding;
+  } else {
+    finish++;
+    std::copy_backward(pos, finish - 1, finish);
+    __construct(pos, value);
+  }
+  return pos;
+}
+
+template<typename T, class Allocator>
+void vector<T, Allocator>::push_back( const T& value ) {
+  __insert_aux(end(), value);
+}
+
+template<typename T, class Allocator>
+typename vector<T, Allocator>::iterator 
+vector<T, Allocator>::insert(iterator pos, size_type n, const T& value ) 
+{
+  if(size() + n > capacity()) {
+    Allocator tmpAlloc;
+    size_type theSize = (size() + n) * 2;
+    iterator newStart,
+      newFinish,
+      newEnding; 
+    newStart = tmpAlloc.allocate(theSize);
+    newFinish = uninitialized_copy(start, finish, newStart);
+    newEnding = theSize + newStart;
+    pos = newStart + (pos - start);
+    tmpAlloc.destroy(start);
+    tmpAlloc.deallocate(start, capacity());
+    start = newStart;
+    finish = newFinish;
+    ending = newEnding;
+  }
+
+  finish += n;
+  std::copy_backward(pos, finish - n, finish);
+  return uninitialized_fill_n(pos, n, value);
 }
 
 }

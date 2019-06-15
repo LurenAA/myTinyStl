@@ -16,8 +16,8 @@
           "args": [
               "-g",
               "-o",
-              "/home/lurenaa/wslCode/test/allocTest.out",
-              "./src/allocTest.cpp"
+              "/home/lurenaa/wslCode/test/stlTest.out",
+              "./src/stlTest.cpp"
           ],
           "group": {
               "kind": "build",

@@ -18,6 +18,7 @@ namespace XX{
         __construct( &*(d_first + i), *(first + i));  //&*用来处理迭代器的情况
       } catch(...) {
         __destroy(&*(d_first + i));
+        throw;
       } 
     }
     return d_first + iterLen;
@@ -30,17 +31,24 @@ namespace XX{
 
   template<typename OutputIt, typename Size, typename T>
   OutputIt uninitialized_fill_n_aux(OutputIt first, Size count, const T& val, std::false_type) {
-
+    for(Size i = 0; i < count; ++i) {
+      try {
+        __construct(&*(first + i), val);
+      } catch (...) {
+        __destroy(&*(first + i));
+        throw;
+      }
+    }
   }
 
   template<typename OutputIt, typename Size, typename T>
   OutputIt uninitialized_fill_n_aux(OutputIt first, Size count, const T& val, std::true_type) {
-
+    return std::fill_n(first, count, val);
   }
 
   template<typename OutputIt, typename Size, typename T>
   OutputIt uninitialized_fill_n(OutputIt first, Size count, const T& val) {
-    return uninitialized_fill_n(first, count, val, std::is_pod<T>());
+    return uninitialized_fill_n_aux(first, count, val, std::is_pod<T>());
   }
 }
 #endif//_UNINITIALIZED_H__
