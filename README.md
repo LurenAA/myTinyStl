@@ -1,7 +1,11 @@
-读《STL源码剖析》，并实现小的demo
+STL源码剖析
+==========
 
-2019/6/9：读之前先按照cppreference的需求实现了allocator的一个基本版本 <br/>
-2019/6/10： 参照了sgi 2.91 defalloc 对于operator new的错误处理办法。<br/>
-2019/6/12: 读完《STL源码剖析》第二章，自己实现了整个alloc，对于多线程的问题后续再来完善 <br/>
-2019/6/13: 完成了一个uninitialized_copy工具函数，理解&*ptr这种对于迭代器的兼容操作.添加了advance函数<br/>
-2019/6/15:添加了一个简单的vector<br/>
+>这个项目包含《STL源码剖析》书中的部分代码和本人的实现。分享给大家来一起学习，希望大家可以帮助完善这个项目，非常感谢！
+
+目录
+
+----
+
+### 第2章 空间配置器
+&emsp;[allocator.hpp](https://github.com/LurenAA/myTinyStl/blob/master/src/allocator/allocator.hpp)<br />
