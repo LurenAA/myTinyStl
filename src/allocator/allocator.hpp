@@ -63,9 +63,9 @@ namespace xstd {
        * 标准：https://zh.cppreference.com/w/cpp/named_req/Allocator
        **/ 
       #if __cplusplus == 201402L
-        void deallocate( T* p, std::size_t n ) {xstd::deallocate(p, n);}
+        void deallocate( pointer p, std::size_t n ) {xstd::deallocate(p, n);}
       #else
-        void deallocate( T* p, std::size_t n ) {xstd::deallocate(p);}
+        void deallocate( pointer p, std::size_t n ) {xstd::deallocate(p);}
       #endif
 
       pointer address(reference x) { return static_cast<pointer>(&x); }
